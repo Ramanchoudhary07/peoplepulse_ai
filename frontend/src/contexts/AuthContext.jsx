@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // Set up axios defaults
 axios.defaults.baseURL =
@@ -42,12 +43,16 @@ const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post("/auth/login", { email, password });
+      console.log("response", response);
+
       const { token, user } = response.data;
 
       localStorage.setItem("token", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setUser(user);
-
+      if (response.message) {
+        toast.success(response.message);
+      }
       return { success: true };
     } catch (error) {
       return {

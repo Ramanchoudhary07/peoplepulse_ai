@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,6 +14,10 @@ import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import Jobs from "./components/jobs/Jobs";
 import CreateJob from "./components/jobs/CreateJob";
+import JobDetails from "./components/jobs/JobDetails";
+import EditJob from "./components/jobs/EditJob";
+import ApplicationsManagement from "./components/onboarding/ApplicationsManagement";
+import ApplyToJob from "./components/jobs/ApplyToJob";
 
 function App() {
   return (
@@ -20,11 +25,12 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            {/* Public Routes */}
+            {/* Public Routes - No Authentication Required */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/apply/:id" element={<ApplyToJob />} />
 
-            {/* Protected Routes */}
+            {/* Protected Routes - Authentication Required */}
             <Route
               path="/dashboard"
               element={
@@ -52,6 +58,33 @@ function App() {
               }
             />
 
+            <Route
+              path="/jobs/:id"
+              element={
+                <ProtectedRoute>
+                  <JobDetails />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/jobs/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <EditJob />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/jobs/:id/applications"
+              element={
+                <ProtectedRoute>
+                  <ApplicationsManagement />
+                </ProtectedRoute>
+              }
+            />
+
             {/* Default redirect */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
@@ -60,6 +93,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <Toaster />
     </AuthProvider>
   );
 }

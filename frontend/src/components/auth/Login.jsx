@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,11 +19,15 @@ const Login = () => {
     setError("");
 
     const result = await login(formData.email, formData.password);
+    console.log("login result", result);
 
     if (!result.success) {
       setError(result.error);
     }
-
+    if (result.success) {
+      toast.success("Login successful!");
+      navigate("/dashboard");
+    }
     setLoading(false);
   };
 

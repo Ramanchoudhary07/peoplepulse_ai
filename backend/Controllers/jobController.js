@@ -357,9 +357,15 @@ export const getApplications = async (req, res) => {
 export const applyToJobHandler = async (req, res) => {
   try {
     const { jobId } = req.params;
-    const { firstName, lastName, email, phone, coverLetter } = req.body;
+    const {
+      applicantName,
+      applicantLastName,
+      applicantEmail,
+      applicantPhone,
+      coverLetter,
+    } = req.body;
 
-    if (!firstName || !lastName || !email) {
+    if (!applicantName || !applicantLastName || !applicantEmail) {
       return res.status(400).json({
         error: "First name, last name, and email are required",
       });
@@ -391,10 +397,10 @@ export const applyToJobHandler = async (req, res) => {
       [
         job.id,
         job.company_id,
-        firstName,
-        lastName,
-        email,
-        phone,
+        applicantName,
+        applicantLastName,
+        applicantEmail,
+        applicantPhone,
         resumeFilename,
         coverLetter,
       ]
